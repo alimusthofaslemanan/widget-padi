@@ -86,8 +86,9 @@ EOF
 cat > $R/drawable/widget_bg.xml <<'EOF'
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="#3F7A47"/>
-    <corners android:radius="20dp"/>
+    <solid android:color="#B33F7A47"/>
+    <stroke android:width="1.5dp" android:color="#66FFFFFF"/>
+    <corners android:radius="24dp"/>
 </shape>
 EOF
 
@@ -95,7 +96,9 @@ cat > $R/xml/padi_widget_info.xml <<'EOF'
 <?xml version="1.0" encoding="utf-8"?>
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     android:minWidth="250dp"
-    android:minHeight="130dp"
+    android:minHeight="160dp"
+    android:minResizeWidth="250dp"
+    android:minResizeHeight="140dp"
     android:targetCellWidth="4"
     android:targetCellHeight="2"
     android:updatePeriodMillis="1800000"
@@ -111,24 +114,134 @@ cat > $R/layout/widget_padi.xml <<'EOF'
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="12dp"
+    android:padding="14dp"
     android:background="@drawable/widget_bg">
-    <TextView android:id="@+id/hst" android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:text="HST -" android:textColor="#FFFFFF" android:textSize="22sp" android:textStyle="bold"
-        android:maxLines="1" android:ellipsize="end"/>
-    <TextView android:id="@+id/panen" android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:layout_marginTop="2dp" android:textColor="#FFFFFF" android:textSize="12sp"
-        android:maxLines="1" android:ellipsize="end"/>
-    <TextView android:id="@+id/cuaca" android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:layout_marginTop="2dp" android:textColor="#FFFFFF" android:textSize="12sp"
-        android:maxLines="1" android:ellipsize="end"/>
-    <TextView android:id="@+id/sekarang" android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:layout_marginTop="6dp" android:textColor="#FFFFFF" android:textSize="12sp" android:textStyle="bold"
-        android:maxLines="2" android:ellipsize="end"/>
-    <TextView android:id="@+id/berikut" android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:layout_marginTop="2dp" android:textColor="#DDEEDD" android:textSize="12sp"
-        android:maxLines="1" android:ellipsize="end"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <TextView android:id="@+id/hst" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:textColor="#FFFFFF" android:textSize="26sp" android:textStyle="bold"
+                android:maxLines="1" android:ellipsize="end"/>
+            <TextView android:id="@+id/panen" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:textColor="#FFFFFF" android:textSize="13sp" android:maxLines="1" android:ellipsize="end"/>
+            <ProgressBar android:id="@+id/progress"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent" android:layout_height="6dp"
+                android:layout_marginTop="4dp" android:layout_marginBottom="4dp"
+                android:max="100" android:progress="0"
+                android:indeterminate="false"
+                android:progressDrawable="@drawable/progress_bar"/>
+            <TextView android:id="@+id/cuaca" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:textColor="#FFFFFF" android:textSize="13sp" android:maxLines="1" android:ellipsize="end"/>
+        </LinearLayout>
+        <TextView android:id="@+id/ikon_cuaca" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp" android:textSize="42sp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"
+            android:layout_marginRight="4dp" android:orientation="vertical">
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:background="@drawable/hdr_hijau" android:text="SEKARANG:"
+                android:textColor="#FFFFFF" android:textSize="12sp" android:textStyle="bold"
+                android:paddingLeft="8dp" android:paddingRight="8dp" android:paddingTop="4dp" android:paddingBottom="4dp"/>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"
+                android:background="@drawable/body_hijau" android:orientation="horizontal"
+                android:gravity="center_vertical" android:padding="8dp">
+                <TextView android:id="@+id/sekarang" android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:textColor="#2B3A2B" android:textSize="12sp"
+                    android:maxLines="3" android:ellipsize="end"/>
+                <TextView android:id="@+id/ikon_sekarang" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp" android:textSize="22sp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"
+            android:layout_marginLeft="4dp" android:orientation="vertical">
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:background="@drawable/hdr_emas" android:text="BERIKUT:"
+                android:textColor="#FFFFFF" android:textSize="12sp" android:textStyle="bold"
+                android:paddingLeft="8dp" android:paddingRight="8dp" android:paddingTop="4dp" android:paddingBottom="4dp"/>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"
+                android:background="@drawable/body_emas" android:orientation="horizontal"
+                android:gravity="center_vertical" android:padding="8dp">
+                <TextView android:id="@+id/berikut" android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:textColor="#3A2D1A" android:textSize="12sp"
+                    android:maxLines="3" android:ellipsize="end"/>
+                <TextView android:id="@+id/ikon_berikut" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp" android:textSize="22sp"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>
+EOF
+
+cat > $R/drawable/hdr_hijau.xml <<'EOF'
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#3F7A47"/>
+    <corners android:topLeftRadius="12dp" android:topRightRadius="12dp"/>
+</shape>
+EOF
+
+cat > $R/drawable/hdr_emas.xml <<'EOF'
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#C48A1F"/>
+    <corners android:topLeftRadius="12dp" android:topRightRadius="12dp"/>
+</shape>
+EOF
+
+cat > $R/drawable/body_hijau.xml <<'EOF'
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#EAF1E2"/>
+    <corners android:bottomLeftRadius="12dp" android:bottomRightRadius="12dp"/>
+</shape>
+EOF
+
+cat > $R/drawable/body_emas.xml <<'EOF'
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#FBEBD6"/>
+    <corners android:bottomLeftRadius="12dp" android:bottomRightRadius="12dp"/>
+</shape>
+EOF
+
+cat > $R/drawable/progress_bar.xml <<'EOF'
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@android:id/background">
+        <shape>
+            <solid android:color="#55FFFFFF"/>
+            <corners android:radius="3dp"/>
+        </shape>
+    </item>
+    <item android:id="@android:id/progress">
+        <clip>
+            <shape>
+                <solid android:color="#FFFFFF"/>
+                <corners android:radius="3dp"/>
+            </shape>
+        </clip>
+    </item>
+</layer-list>
 EOF
 
 cat > $J/Core.java <<'EOF'
@@ -155,23 +268,33 @@ import java.util.Locale;
 
 public class Core {
     static class Phase {
-        String name; int from, to;
-        Phase(String n, int f, int t) { name = n; from = f; to = t; }
+        String name, icon; int from, to;
+        Phase(String n, int f, int t, String i) { name = n; from = f; to = t; icon = i; }
     }
+
+    static final String E_BENIH = "\uD83C\uDF31";
+    static final String E_TRAKTOR = "\uD83D\uDE9C";
+    static final String E_PUPUK = "\uD83E\uDDEA";
+    static final String E_RUMPUT = "\uD83C\uDF3F";
+    static final String E_BUNGA = "\uD83C\uDF38";
+    static final String E_PADI = "\uD83C\uDF3E";
+    static final String E_KERANJANG = "\uD83E\uDDFA";
+    static final String E_AIR = "\uD83D\uDCA7";
+    static final String E_SELESAI = "\u2705";
 
     // Jadwal perawatan (HST = hari setelah tanam)
     static final Phase[] PHASES = {
-        new Phase("Persemaian Benih", -21, -1),
-        new Phase("Olah Lahan & Tanam", -10, 0),
-        new Phase("Pemupukan Dasar", 7, 14),
-        new Phase("Penyiangan I", 15, 21),
-        new Phase("Pemupukan Susulan II", 25, 30),
-        new Phase("Penyiangan II", 30, 40),
-        new Phase("Primordia / Pemupukan III", 40, 50),
-        new Phase("Pembungaan", 55, 70),
-        new Phase("Pengisian Bulir", 70, 90),
-        new Phase("Masak Susu-Kuning", 90, 105),
-        new Phase("Panen", 105, 120)
+        new Phase("Persemaian Benih", -21, -1, E_BENIH),
+        new Phase("Olah Lahan & Tanam", -10, 0, E_TRAKTOR),
+        new Phase("Pemupukan Dasar", 7, 14, E_PUPUK),
+        new Phase("Penyiangan I", 15, 21, E_RUMPUT),
+        new Phase("Pemupukan Susulan II", 25, 30, E_PUPUK),
+        new Phase("Penyiangan II", 30, 40, E_RUMPUT),
+        new Phase("Primordia / Pemupukan III", 40, 50, E_PUPUK),
+        new Phase("Pembungaan", 55, 70, E_BUNGA),
+        new Phase("Pengisian Bulir", 70, 90, E_PADI),
+        new Phase("Masak Susu-Kuning", 90, 105, E_PADI),
+        new Phase("Panen", 105, 120, E_KERANJANG)
     };
 
     static SharedPreferences sp(Context c) {
@@ -185,19 +308,18 @@ public class Core {
     }
 
     static long hst(Context c) {
-        LocalDate t = tanam(c);
-        return ChronoUnit.DAYS.between(t, LocalDate.now());
+        return ChronoUnit.DAYS.between(tanam(c), LocalDate.now());
     }
 
     static String hstText(Context c) {
         if (tanam(c) == null) return "Atur tanggal tanam";
         long h = hst(c);
-        return h < 0 ? "H" + h + " sebelum tanam" : "HST " + h;
+        return h < 0 ? "H" + h + " tanam" : "HST " + h;
     }
 
     static String panenText(Context c) {
         LocalDate t = tanam(c);
-        if (t == null) return "Estimasi panen: -";
+        if (t == null) return "Est. panen: -";
         int umur = sp(c).getInt("umur", 110);
         LocalDate p = t.plusDays(umur);
         long sisa = ChronoUnit.DAYS.between(LocalDate.now(), p);
@@ -207,8 +329,16 @@ public class Core {
         return "Est. panen " + tgl + " (sudah lewat)";
     }
 
+    static int progress(Context c) {
+        if (tanam(c) == null) return 0;
+        int umur = Math.max(1, sp(c).getInt("umur", 110));
+        long h = hst(c);
+        if (h <= 0) return 0;
+        return (int) Math.min(100, h * 100 / umur);
+    }
+
     static String sekarangText(Context c) {
-        if (tanam(c) == null) return "Jadwal: ketuk untuk mengatur";
+        if (tanam(c) == null) return "Ketuk untuk mengatur";
         long h = hst(c);
         StringBuilder sb = new StringBuilder();
         for (Phase p : PHASES) {
@@ -217,20 +347,39 @@ public class Core {
                 sb.append(p.name);
             }
         }
-        if (sb.length() == 0) return "Sekarang: perawatan rutin (jaga air & hama)";
-        return "Sekarang: " + sb;
+        if (sb.length() == 0) return "Perawatan rutin (jaga air & hama)";
+        return sb.toString();
     }
 
-    static String berikutText(Context c) {
-        if (tanam(c) == null) return "";
+    static String sekarangIcon(Context c) {
+        if (tanam(c) == null) return E_PADI;
+        long h = hst(c);
+        for (Phase p : PHASES) {
+            if (h >= p.from && h <= p.to) return p.icon;
+        }
+        return E_AIR;
+    }
+
+    static Phase berikut(Context c) {
         long h = hst(c);
         Phase next = null;
         for (Phase p : PHASES) {
             if (p.from > h && (next == null || p.from < next.from)) next = p;
         }
-        if (next == null) return "Berikut: musim tanam selesai";
-        long d = next.from - h;
-        return "Berikut: " + next.name + " (" + d + " hari lagi)";
+        return next;
+    }
+
+    static String berikutText(Context c) {
+        if (tanam(c) == null) return "-";
+        Phase n = berikut(c);
+        if (n == null) return "Musim tanam selesai";
+        return n.name + " (" + (n.from - hst(c)) + " hari lagi)";
+    }
+
+    static String berikutIcon(Context c) {
+        if (tanam(c) == null) return "";
+        Phase n = berikut(c);
+        return n == null ? E_SELESAI : n.icon;
     }
 
     static String cuacaText(Context c) {
@@ -243,6 +392,25 @@ public class Core {
         String jam = new SimpleDateFormat("HH:mm", new Locale("id"))
                 .format(new Date(p.getLong("cuaca_t", 0)));
         return s + " (" + jam + ")";
+    }
+
+    static String cuacaIcon(Context c) {
+        SharedPreferences p = sp(c);
+        if (!p.contains("cuaca_kode")) return "\uD83C\uDF3E";
+        return codeIcon(p.getInt("cuaca_kode", 3));
+    }
+
+    static String codeIcon(int c) {
+        if (c == 0) return "\u2600\uFE0F";
+        if (c <= 2) return "\u26C5";
+        if (c == 3) return "\u2601\uFE0F";
+        if (c == 45 || c == 48) return "\uD83C\uDF2B\uFE0F";
+        if (c >= 51 && c <= 57) return "\uD83C\uDF26\uFE0F";
+        if (c >= 61 && c <= 67) return "\uD83C\uDF27\uFE0F";
+        if (c >= 71 && c <= 77) return "\u2744\uFE0F";
+        if (c >= 80 && c <= 82) return "\uD83C\uDF27\uFE0F";
+        if (c >= 95) return "\u26C8\uFE0F";
+        return "\u2601\uFE0F";
     }
 
     static String codeText(int c) {
@@ -284,15 +452,16 @@ public class Core {
             JSONObject cur = root.getJSONObject("current");
             double t = cur.getDouble("temperature_2m");
             int code = cur.getInt("weather_code");
-            String out = codeText(code) + ", " + Math.round(t) + "°C";
+            String out = codeText(code) + ", " + Math.round(t) + "\u00B0C";
             JSONObject daily = root.optJSONObject("daily");
             if (daily != null) {
                 JSONArray a = daily.optJSONArray("precipitation_probability_max");
                 if (a != null && a.length() > 0 && !a.isNull(0)) {
-                    out += " · hujan " + a.getInt(0) + "%";
+                    out += " \u00B7 hujan " + a.getInt(0) + "%";
                 }
             }
-            p.edit().putString("cuaca", out).putLong("cuaca_t", System.currentTimeMillis()).apply();
+            p.edit().putString("cuaca", out).putInt("cuaca_kode", code)
+                    .putLong("cuaca_t", System.currentTimeMillis()).apply();
             return true;
         } catch (Exception e) {
             return false;
@@ -346,11 +515,15 @@ public class PadiWidget extends AppWidgetProvider {
     static void render(Context ctx, AppWidgetManager mgr, int[] ids) {
         for (int id : ids) {
             RemoteViews v = new RemoteViews(ctx.getPackageName(), R.layout.widget_padi);
-            v.setTextViewText(R.id.hst, Core.hstText(ctx));
+            v.setTextViewText(R.id.hst, Core.hstText(ctx) + " \uD83C\uDF3E");
             v.setTextViewText(R.id.panen, Core.panenText(ctx));
+            v.setProgressBar(R.id.progress, 100, Core.progress(ctx), false);
             v.setTextViewText(R.id.cuaca, Core.cuacaText(ctx));
+            v.setTextViewText(R.id.ikon_cuaca, Core.cuacaIcon(ctx));
             v.setTextViewText(R.id.sekarang, Core.sekarangText(ctx));
+            v.setTextViewText(R.id.ikon_sekarang, Core.sekarangIcon(ctx));
             v.setTextViewText(R.id.berikut, Core.berikutText(ctx));
+            v.setTextViewText(R.id.ikon_berikut, Core.berikutIcon(ctx));
             Intent i = new Intent(ctx, MainActivity.class);
             PendingIntent pi = PendingIntent.getActivity(ctx, 0, i,
                     PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
